@@ -1,0 +1,10 @@
+const TodoActionTypes = {
+  ADD_TODO: "ADD_TODO",
+  TOGGLE_TODO: "TOGGLE_TODO",
+  DELETE_TODO: "DELETE_TODO",
+  EDIT_TODO: "EDIT_TODO",
+  SAVE_EDIT_TODO: "SAVE_EDIT_TODO",
+  CANCEL_EDIT_TODO: "CANCEL_EDIT_TODO"
+};
+
+export default TodoActionTypes;
