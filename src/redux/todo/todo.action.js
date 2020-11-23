@@ -35,3 +35,12 @@ export const editTodo = createAction(
     };
   }
 );
+
+export const saveEditTodo = createAction(
+  TodoActionTypes.SAVE_EDIT_TODO,
+  function prepare(id, text) {
+    return {
+      payload: { id, text }
+    };
+  }
+);
