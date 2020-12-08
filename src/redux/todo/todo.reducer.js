@@ -20,7 +20,7 @@ const todoReducer = createReducer(initialState, (builder) => {
     state[action.payload - 1].status = !state[action.payload - 1].status;
   });
   builder.addCase(TodoActionTypes.DELETE_TODO, (state, action) => {
-    delete state[action.payload - 1];
+    return state.filter((item) => item.id !== action.payload);
   });
   builder.addCase(TodoActionTypes.EDIT_TODO, (state, action) => {
     state[action.payload - 1].edit = !state[action.payload - 1].edit;
