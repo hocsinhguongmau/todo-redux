@@ -1,13 +1,14 @@
 import { createAction } from "@reduxjs/toolkit";
 import TodoActionTypes from "./todo.types";
 
-export const addTodo = createAction(TodoActionTypes.ADD_TODO, function prepare(
-  text
-) {
-  return {
-    payload: text
-  };
-});
+export const addTodo = createAction(
+  TodoActionTypes.ADD_TODO,
+  function prepare(text) {
+    return {
+      payload: text
+    };
+  }
+);
 
 export const toggleTodo = createAction(
   TodoActionTypes.TOGGLE_TODO,
@@ -41,6 +42,15 @@ export const saveEditTodo = createAction(
   function prepare(id, text) {
     return {
       payload: { id, text }
+    };
+  }
+);
+
+export const updateQuantityTodo = createAction(
+  TodoActionTypes.UPDATE_QUANTITY_TODO,
+  function prepare(id, quantity) {
+    return {
+      payload: { id, quantity }
     };
   }
 );

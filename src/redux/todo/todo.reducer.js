@@ -2,8 +2,8 @@ import { createReducer } from "@reduxjs/toolkit";
 import TodoActionTypes from "./todo.types";
 
 const initialState = [
-  { id: 1, task: "Eat", status: true, edit: false },
-  { id: 2, task: "Sleep", status: false, edit: false }
+  { id: 1, task: "Eat", quantity: 1, status: true, edit: false },
+  { id: 2, task: "Sleep", quantity: 1, status: false, edit: false }
 ];
 
 const todoReducer = createReducer(initialState, (builder) => {
@@ -12,6 +12,7 @@ const todoReducer = createReducer(initialState, (builder) => {
     state.push({
       id: count + 1,
       task: action.payload,
+      quantity: 1,
       status: false,
       edit: false
     });
@@ -27,6 +28,9 @@ const todoReducer = createReducer(initialState, (builder) => {
   });
   builder.addCase(TodoActionTypes.SAVE_EDIT_TODO, (state, action) => {
     state[action.payload.id - 1].task = action.payload.text;
+  });
+  builder.addCase(TodoActionTypes.UPDATE_QUANTITY_TODO, (state, action) => {
+    state[action.payload.id - 1].quantity = action.payload.quantity;
   });
 });
 

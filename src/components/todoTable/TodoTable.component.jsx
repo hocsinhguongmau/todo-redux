@@ -1,6 +1,6 @@
 import React from "react";
-import { Space } from "antd";
-import { Form, Checkbox } from "antd";
+import { Space, Divider } from "antd";
+import { Form, Checkbox, InputNumber } from "antd";
 import { Table } from "antd";
 
 import { connect } from "react-redux";
@@ -14,7 +14,8 @@ const TodoTable = ({
   toggleTodo,
   saveEditTodo,
   editTodo,
-  deleteTodo
+  deleteTodo,
+  updateQuantityTodo
 }) => {
   const columns = [
     {
@@ -34,6 +35,23 @@ const TodoTable = ({
           <Checkbox
             onChange={() => toggleTodo(record.id)}
             defaultChecked={text}
+          />
+        );
+      }
+    },
+    {
+      title: "Quantity",
+      dataIndex: "quantity",
+      key: "quantity",
+      render: (text, record) => {
+        return (
+          <InputNumber
+            style={{ width: "50px" }}
+            min={1}
+            defaultValue={text}
+            onChange={(value) => {
+              updateQuantityTodo(record.id, value);
+            }}
           />
         );
       }
@@ -71,15 +89,31 @@ const TodoTable = ({
       )
     }
   ];
+  const finishedTasks = tasks.filter((task) => task.status === true);
+  const unfinishedTasks = tasks.filter((task) => task.status === false);
   return (
     <>
-      {tasks.length > 0 && (
-        <Table
-          columns={columns}
-          dataSource={tasks}
-          rowKey="id"
-          pagination={false}
-        />
+      {unfinishedTasks.length > 0 && (
+        <>
+          <Divider>Tasks</Divider>
+          <Table
+            columns={columns}
+            dataSource={unfinishedTasks}
+            rowKey="id"
+            pagination={false}
+          />
+        </>
+      )}
+      {finishedTasks.length > 0 && (
+        <>
+          <Divider>Completed Tasks</Divider>
+          <Table
+            columns={columns}
+            dataSource={finishedTasks}
+            rowKey="id"
+            pagination={false}
+          />
+        </>
       )}
     </>
   );
@@ -93,7 +127,9 @@ const mapDispatchToProps = (dispatch) => ({
   toggleTodo: (id) => dispatch(todo.toggleTodo(id)),
   deleteTodo: (id) => dispatch(todo.deleteTodo(id)),
   editTodo: (id) => dispatch(todo.editTodo(id)),
-  saveEditTodo: (id, text) => dispatch(todo.saveEditTodo(id, text))
+  saveEditTodo: (id, text) => dispatch(todo.saveEditTodo(id, text)),
+  updateQuantityTodo: (id, quantity) =>
+    dispatch(todo.updateQuantityTodo(id, quantity))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoTable);
