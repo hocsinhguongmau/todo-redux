@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Space, Divider } from "antd";
 import { Form, Checkbox, InputNumber } from "antd";
 import { Table } from "antd";
@@ -15,7 +15,8 @@ const TodoTable = ({
   saveEditTodo,
   editTodo,
   deleteTodo,
-  updateQuantityTodo
+  updateQuantityTodo,
+  todoRefresh
 }) => {
   const columns = [
     {
@@ -73,7 +74,7 @@ const TodoTable = ({
                 editTodo(record.id);
               }}
             >
-              <TodoRow record={record} editTodo={editTodo} />
+              <TodoRow id={record.id} editTodo={editTodo} />
             </Form>
           ) : (
             <>
@@ -89,8 +90,18 @@ const TodoTable = ({
       )
     }
   ];
+
   const finishedTasks = tasks.filter((task) => task.status === true);
   const unfinishedTasks = tasks.filter((task) => task.status === false);
+
+  useEffect(() => {
+    async function fetchMyAPI() {
+      todoRefresh();
+    }
+
+    fetchMyAPI();
+  }, [todoRefresh]);
+
   return (
     <>
       {unfinishedTasks.length > 0 && (
@@ -124,6 +135,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  todoRefresh: () => dispatch(todo.todoRefresh()),
   toggleTodo: (id) => dispatch(todo.toggleTodo(id)),
   deleteTodo: (id) => dispatch(todo.deleteTodo(id)),
   editTodo: (id) => dispatch(todo.editTodo(id)),

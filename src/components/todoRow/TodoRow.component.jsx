@@ -2,10 +2,7 @@ import React from "react";
 import { Row, Col } from "antd";
 import { Form, Input, Button } from "antd";
 
-import * as todo from "../../redux/todo/todo.action";
-import { connect } from "react-redux";
-
-const TodoRow = ({ editTodo }) => {
+const TodoRow = (props) => {
   return (
     <Row>
       <Col span={12}>
@@ -32,7 +29,7 @@ const TodoRow = ({ editTodo }) => {
       </Col>
       <Col span={6}>
         <Form.Item style={{ marginBottom: "0px" }}>
-          <Button type="primary" onClick={() => editTodo(this.props.record.id)}>
+          <Button type="primary" onClick={() => props.editTodo(props.id)}>
             Cancel
           </Button>
         </Form.Item>
@@ -40,8 +37,5 @@ const TodoRow = ({ editTodo }) => {
     </Row>
   );
 };
-const mapDispatchToProps = (dispatch) => ({
-  editTodo: (id) => dispatch(todo.editTodo(id))
-});
 
-export default connect(null, mapDispatchToProps)(TodoRow);
+export default TodoRow;

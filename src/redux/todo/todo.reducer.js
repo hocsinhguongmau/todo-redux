@@ -1,12 +1,15 @@
 import { createReducer } from "@reduxjs/toolkit";
 import TodoActionTypes from "./todo.types";
 
-const initialState = [
-  { id: 1, task: "Eat", quantity: 1, status: true, edit: false },
-  { id: 2, task: "Sleep", quantity: 1, status: false, edit: false }
-];
+const initialState = [];
 
 const todoReducer = createReducer(initialState, (builder) => {
+  builder.addCase(TodoActionTypes.TODO_REFRESH_REQUEST, (state, action) => {
+    return state;
+  });
+  builder.addCase(TodoActionTypes.TODO_REFRESH_DONE, (state, action) => {
+    return action.payload;
+  });
   builder.addCase(TodoActionTypes.ADD_TODO, (state, action) => {
     let count = state.length;
     state.push({
