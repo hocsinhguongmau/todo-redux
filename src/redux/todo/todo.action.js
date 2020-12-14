@@ -62,12 +62,34 @@ const todoRefreshDone = (payload) => ({
   type: TodoActionTypes.TODO_REFRESH_DONE,
   payload
 });
-
 export const todoRefresh = () => {
   return (dispatch) => {
-    dispatch(todoRefreshRequest);
+    dispatch(todoRefreshRequest());
     return fetch("http://localhost:3050/tasks")
       .then((res) => res.json())
       .then((tasks) => dispatch(todoRefreshDone(tasks)));
+  };
+};
+
+const todoInsertRequest = () => ({
+  type: TodoActionTypes.TODO_INSERT_REQUEST
+});
+export const insertTodo = (todo) => {
+  return (dispatch) => {
+    dispatch(todoInsertRequest());
+    return fetch("http://localhost:3050/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        task: todo,
+        quantity: 1,
+        status: false,
+        edit: false
+      })
+    })
+      .then((res) => res.json())
+      .then(() => dispatch(todoRefresh()));
   };
 };

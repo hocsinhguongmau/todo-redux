@@ -10,16 +10,19 @@ const todoReducer = createReducer(initialState, (builder) => {
   builder.addCase(TodoActionTypes.TODO_REFRESH_DONE, (state, action) => {
     return action.payload;
   });
-  builder.addCase(TodoActionTypes.ADD_TODO, (state, action) => {
-    let count = state.length;
-    state.push({
-      id: count + 1,
-      task: action.payload,
-      quantity: 1,
-      status: false,
-      edit: false
-    });
+  builder.addCase(TodoActionTypes.TODO_INSERT_REQUEST, (state, action) => {
+    return state;
   });
+  // builder.addCase(TodoActionTypes.ADD_TODO, (state, action) => {
+  //   let count = state.length;
+  //   state.push({
+  //     id: count + 1,
+  //     task: action.payload,
+  //     quantity: 1,
+  //     status: false,
+  //     edit: false
+  //   });
+  // });
   builder.addCase(TodoActionTypes.TOGGLE_TODO, (state, action) => {
     state[action.payload - 1].status = !state[action.payload - 1].status;
   });
