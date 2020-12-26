@@ -19,15 +19,6 @@ export const toggleTodo = createAction(
   }
 );
 
-export const deleteTodo = createAction(
-  TodoActionTypes.DELETE_TODO,
-  function prepare(id) {
-    return {
-      payload: id
-    };
-  }
-);
-
 export const editTodo = createAction(
   TodoActionTypes.EDIT_TODO,
   function prepare(id) {
@@ -91,5 +82,19 @@ export const insertTodo = (todo) => {
     })
       .then((res) => res.json())
       .then(() => dispatch(todoRefresh()));
+  };
+};
+
+const todoDeleteRequest = (id) => ({
+  type: TodoActionTypes.TODO_DELETE_REQUEST,
+  payload: id
+});
+
+export const deleteTodo = (todo) => {
+  return (dispatch) => {
+    dispatch(todoDeleteRequest());
+    return fetch("http://localhost:3050/tasks/" + encodeURIComponent(todo), {
+      method: "DELETE"
+    }).then(() => dispatch(todoRefresh()));
   };
 };

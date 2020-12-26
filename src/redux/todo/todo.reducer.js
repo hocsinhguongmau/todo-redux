@@ -13,21 +13,12 @@ const todoReducer = createReducer(initialState, (builder) => {
   builder.addCase(TodoActionTypes.TODO_INSERT_REQUEST, (state, action) => {
     return state;
   });
-  // builder.addCase(TodoActionTypes.ADD_TODO, (state, action) => {
-  //   let count = state.length;
-  //   state.push({
-  //     id: count + 1,
-  //     task: action.payload,
-  //     quantity: 1,
-  //     status: false,
-  //     edit: false
-  //   });
-  // });
+
   builder.addCase(TodoActionTypes.TOGGLE_TODO, (state, action) => {
     state[action.payload - 1].status = !state[action.payload - 1].status;
   });
   builder.addCase(TodoActionTypes.DELETE_TODO, (state, action) => {
-    return state.filter((item) => item.id !== action.payload);
+    return action.payload;
   });
   builder.addCase(TodoActionTypes.EDIT_TODO, (state, action) => {
     state[action.payload - 1].edit = !state[action.payload - 1].edit;
