@@ -17,7 +17,7 @@ const todoReducer = createReducer(initialState, (builder) => {
     return state;
   });
   builder.addCase(TodoActionTypes.TOGGLE_TODO, (state, action) => {
-    state[action.payload - 1].status = !state[action.payload - 1].status;
+    return state;
   });
   builder.addCase(TodoActionTypes.EDIT_TODO, (state, action) => {
     state
@@ -25,10 +25,10 @@ const todoReducer = createReducer(initialState, (builder) => {
       .map((item) => (item.edit = !item.edit));
   });
   builder.addCase(TodoActionTypes.SAVE_EDIT_TODO, (state, action) => {
-    state[action.payload.id - 1].task = action.payload.text;
+    return state;
   });
   builder.addCase(TodoActionTypes.UPDATE_QUANTITY_TODO, (state, action) => {
-    state[action.payload.id - 1].quantity = action.payload.quantity;
+    return state;
   });
 });
 

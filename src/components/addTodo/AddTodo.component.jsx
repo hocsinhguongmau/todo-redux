@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
 import { Form, Input, Button } from "antd";
-import * as todo from "../../redux/todo/todo.action";
+import { todoInsert } from "../../redux/todo/actions/todoInsert.action";
 
 const AddTodoComponent = ({ addTodo }) => {
   const [form] = Form.useForm();
@@ -49,7 +49,7 @@ const AddTodoComponent = ({ addTodo }) => {
 
 const mapDispatchToProps = (dispatch) => ({
   addTodo: (e) => {
-    dispatch(todo.insertTodo(e));
+    dispatch(todoInsert(e));
   }
 });
 

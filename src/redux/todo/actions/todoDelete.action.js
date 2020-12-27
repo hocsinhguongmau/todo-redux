@@ -6,10 +6,10 @@ const todoDeleteRequest = (id) => ({
   payload: id
 });
 
-export const todoDelete = (todo) => {
+export const todoDelete = (todoId) => {
   return (dispatch) => {
     dispatch(todoDeleteRequest());
-    return fetch("http://localhost:3050/tasks/" + encodeURIComponent(todo), {
+    return fetch("http://localhost:3050/tasks/" + encodeURIComponent(todoId), {
       method: "DELETE"
     }).then(() => dispatch(todoRefresh()));
   };

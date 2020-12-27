@@ -1,25 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Space, Divider } from "antd";
 import { Form, Checkbox, InputNumber } from "antd";
-import { Table } from "antd";
+import { Table, Spin } from "antd";
 
 import { connect } from "react-redux";
 
 import * as todo from "../../redux/todo/todo.action";
 import { todoRefresh } from "../../redux/todo/actions/todoRefresh.action";
 import { todoDelete } from "../../redux/todo/actions/todoDelete.action";
+import { todoToggle } from "../../redux/todo/actions/todoToggle.action";
+import { todoUpdateQuantity } from "../../redux/todo/actions/todoUpdateQuantity.action";
+import { todoReplace } from "../../redux/todo/actions/todoReplace.action";
 
 import TodoRow from "../todoRow/TodoRow.component";
-
 const TodoTable = ({
   tasks,
   toggleTodo,
-  saveEditTodo,
+  todoReplace,
   editTodo,
   todoDelete,
-  updateQuantityTodo,
+  todoUpdateQuantity,
   todoRefresh
 }) => {
+  const [loading, setLoading] = useState(true);
   const columns = [
     {
       title: "Task",
@@ -35,10 +38,7 @@ const TodoTable = ({
       key: "status",
       render: (text, record) => {
         return (
-          <Checkbox
-            onChange={() => toggleTodo(record.id)}
-            defaultChecked={text}
-          />
+          <Checkbox onChange={() => toggleTodo(record)} defaultChecked={text} />
         );
       }
     },
@@ -53,7 +53,7 @@ const TodoTable = ({
             min={1}
             defaultValue={text}
             onChange={(value) => {
-              updateQuantityTodo(record.id, value);
+              todoUpdateQuantity(record, value);
             }}
           />
         );
@@ -72,7 +72,7 @@ const TodoTable = ({
                 remember: false
               }}
               onFinish={(values) => {
-                saveEditTodo(record.id, values.task);
+                todoReplace(record, values.task);
                 editTodo(record.id);
               }}
             >
@@ -102,30 +102,39 @@ const TodoTable = ({
     }
 
     fetchMyAPI();
+    setLoading(false);
   }, [todoRefresh]);
 
   return (
     <>
-      {unfinishedTasks.length > 0 && (
+      {loading ? (
+        <div style={{ textAlign: "center", padding: "50px 10px" }}>
+          <Spin />
+        </div>
+      ) : (
         <>
-          <Divider>Tasks</Divider>
-          <Table
-            columns={columns}
-            dataSource={unfinishedTasks}
-            rowKey="id"
-            pagination={false}
-          />
-        </>
-      )}
-      {finishedTasks.length > 0 && (
-        <>
-          <Divider>Completed Tasks</Divider>
-          <Table
-            columns={columns}
-            dataSource={finishedTasks}
-            rowKey="id"
-            pagination={false}
-          />
+          {unfinishedTasks.length > 0 && (
+            <>
+              <Divider>Tasks</Divider>
+              <Table
+                columns={columns}
+                dataSource={unfinishedTasks}
+                rowKey="id"
+                pagination={false}
+              />
+            </>
+          )}
+          {finishedTasks.length > 0 && (
+            <>
+              <Divider>Completed Tasks</Divider>
+              <Table
+                columns={columns}
+                dataSource={finishedTasks}
+                rowKey="id"
+                pagination={false}
+              />
+            </>
+          )}
         </>
       )}
     </>
@@ -138,12 +147,12 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   todoRefresh: () => dispatch(todoRefresh()),
-  toggleTodo: (id) => dispatch(todo.toggleTodo(id)),
+  toggleTodo: (item) => dispatch(todoToggle(item)),
   todoDelete: (id) => dispatch(todoDelete(id)),
   editTodo: (id) => dispatch(todo.editTodo(id)),
-  saveEditTodo: (id, text) => dispatch(todo.saveEditTodo(id, text)),
-  updateQuantityTodo: (id, quantity) =>
-    dispatch(todo.updateQuantityTodo(id, quantity))
+  todoReplace: (id, text) => dispatch(todoReplace(id, text)),
+  todoUpdateQuantity: (item, quantity) =>
+    dispatch(todoUpdateQuantity(item, quantity))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoTable);
