@@ -1,5 +1,7 @@
 import { createAction } from "@reduxjs/toolkit";
+import uuid from "react-uuid";
 import TodoActionTypes from "./todo.types";
+import { todoRefresh } from "./actions/todoRefresh.action";
 
 export const addTodo = createAction(
   TodoActionTypes.ADD_TODO,
@@ -46,22 +48,6 @@ export const updateQuantityTodo = createAction(
   }
 );
 
-const todoRefreshRequest = () => ({
-  type: TodoActionTypes.TODO_REFRESH_REQUEST
-});
-const todoRefreshDone = (payload) => ({
-  type: TodoActionTypes.TODO_REFRESH_DONE,
-  payload
-});
-export const todoRefresh = () => {
-  return (dispatch) => {
-    dispatch(todoRefreshRequest());
-    return fetch("http://localhost:3050/tasks")
-      .then((res) => res.json())
-      .then((tasks) => dispatch(todoRefreshDone(tasks)));
-  };
-};
-
 const todoInsertRequest = () => ({
   type: TodoActionTypes.TODO_INSERT_REQUEST
 });
@@ -74,6 +60,7 @@ export const insertTodo = (todo) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
+        id: uuid(),
         task: todo,
         quantity: 1,
         status: false,
@@ -82,19 +69,5 @@ export const insertTodo = (todo) => {
     })
       .then((res) => res.json())
       .then(() => dispatch(todoRefresh()));
-  };
-};
-
-const todoDeleteRequest = (id) => ({
-  type: TodoActionTypes.TODO_DELETE_REQUEST,
-  payload: id
-});
-
-export const deleteTodo = (todo) => {
-  return (dispatch) => {
-    dispatch(todoDeleteRequest());
-    return fetch("http://localhost:3050/tasks/" + encodeURIComponent(todo), {
-      method: "DELETE"
-    }).then(() => dispatch(todoRefresh()));
   };
 };

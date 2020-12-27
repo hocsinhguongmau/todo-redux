@@ -6,6 +6,8 @@ import { Table } from "antd";
 import { connect } from "react-redux";
 
 import * as todo from "../../redux/todo/todo.action";
+import { todoRefresh } from "../../redux/todo/actions/todoRefresh.action";
+import { todoDelete } from "../../redux/todo/actions/todoDelete.action";
 
 import TodoRow from "../todoRow/TodoRow.component";
 
@@ -14,7 +16,7 @@ const TodoTable = ({
   toggleTodo,
   saveEditTodo,
   editTodo,
-  deleteTodo,
+  todoDelete,
   updateQuantityTodo,
   todoRefresh
 }) => {
@@ -81,7 +83,7 @@ const TodoTable = ({
               <a href="/#" onClick={() => editTodo(record.id)}>
                 Edit
               </a>
-              <a href="/#" onClick={() => deleteTodo(record.id)}>
+              <a href="/#" onClick={() => todoDelete(record.id)}>
                 Delete
               </a>
             </>
@@ -135,9 +137,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  todoRefresh: () => dispatch(todo.todoRefresh()),
+  todoRefresh: () => dispatch(todoRefresh()),
   toggleTodo: (id) => dispatch(todo.toggleTodo(id)),
-  deleteTodo: (id) => dispatch(todo.deleteTodo(id)),
+  todoDelete: (id) => dispatch(todoDelete(id)),
   editTodo: (id) => dispatch(todo.editTodo(id)),
   saveEditTodo: (id, text) => dispatch(todo.saveEditTodo(id, text)),
   updateQuantityTodo: (id, quantity) =>

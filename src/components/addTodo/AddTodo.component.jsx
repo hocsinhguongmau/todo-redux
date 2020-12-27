@@ -48,7 +48,6 @@ const AddTodoComponent = ({ addTodo }) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  // addTodo: (e) => dispatch(todo.addTodo(e))
   addTodo: (e) => {
     dispatch(todo.insertTodo(e));
   }

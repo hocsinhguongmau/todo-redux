@@ -13,15 +13,16 @@ const todoReducer = createReducer(initialState, (builder) => {
   builder.addCase(TodoActionTypes.TODO_INSERT_REQUEST, (state, action) => {
     return state;
   });
-
+  builder.addCase(TodoActionTypes.TODO_DELETE_REQUEST, (state, action) => {
+    return state;
+  });
   builder.addCase(TodoActionTypes.TOGGLE_TODO, (state, action) => {
     state[action.payload - 1].status = !state[action.payload - 1].status;
   });
-  builder.addCase(TodoActionTypes.DELETE_TODO, (state, action) => {
-    return action.payload;
-  });
   builder.addCase(TodoActionTypes.EDIT_TODO, (state, action) => {
-    state[action.payload - 1].edit = !state[action.payload - 1].edit;
+    state
+      .filter((item) => item.id === action.payload)
+      .map((item) => (item.edit = !item.edit));
   });
   builder.addCase(TodoActionTypes.SAVE_EDIT_TODO, (state, action) => {
     state[action.payload.id - 1].task = action.payload.text;
